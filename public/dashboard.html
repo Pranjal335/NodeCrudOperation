@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>User Dashboard</title>
+</head>
+<body>
+  <h2>Welcome to your Dashboard</h2>
+  <div id="userInfo">
+    <img id="profileImage" width="100"><br>
+    <p id="userEmail"></p>
+  </div>
+
+  <button onclick="goToViewPage()">View Blogs</button>
+
+  <script>
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      alert("Please login");
+      window.location.href = "/login.html";
+    }
+
+    fetch("http://localhost:5000/api/auth/dashboard", {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.profileImage) {
+        document.getElementById("profileImage").src = `${data.profileImage}`;
+      }
+      document.getElementById("userEmail").innerText = `Logged in as: ${data.msg}`;
+    })
+    .catch(err => {
+      alert("Session expired");
+      localStorage.removeItem("token");
+      window.location.href = "/login.html";
+    });
+
+    function goToViewPage() {
+      window.location.href = "/"; 
+    }
+  </script>
+</body>
+</html>

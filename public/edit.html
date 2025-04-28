@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Edit Blog</title>
+</head>
+<body>
+  <h2>Edit Blog</h2>
+  <form id="editForm" enctype="multipart/form-data">
+    <input type="text" name="title" id="title" placeholder="Title" required><br><br>
+    <img id="currentImage" src="" width="100" /><br><br>
+    <input type="file" name="image"><br><br>
+    <textarea name="description" id="description" placeholder="Description" required></textarea><br><br>
+    <button type="submit">Update Blog</button>
+  </form>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const blogId = urlParams.get('id');
+
+    fetch(`/blogs/${blogId}`)
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById('title').value = data.title;
+        document.getElementById('description').value = data.description;
+        document.getElementById('currentImage').src = `/uploads/${data.image}`;
+      });
+
+    document.getElementById('editForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+
+      const response = await fetch(`/blogs/edit/${blogId}`, {
+        method: 'POST',
+        body: formData
+      });
+
+      if (response.ok) {
+        alert('Blog updated!');
+        window.location.href = '/index.html';
+      } else {
+        alert('Failed to update blog');
+      }
+    });
+  </script>
+</body>
+</html>

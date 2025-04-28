@@ -1,0 +1,43 @@
+<h2>Blog List</h2>
+<table border="1" id="blogTable">
+  <thead>
+    <tr><th>Title</th><th>Image</th><th>Description</th><th>Actions</th></tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<button onclick="goToAddBlog()">Add Blogs</button>
+
+<script>
+fetch('/blogs')
+  .then(res => res.json())
+  .then(blogs => {
+    const tbody = document.querySelector('#blogTable tbody');
+    blogs.forEach(blog => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${blog.title}</td>
+        <td><img src="/uploads/${blog.image}" width="80" /></td>
+        <td>${blog.description.slice(0, 50)}...</td>
+        <td>
+          <a href="/view.html?id=${blog._id}">View</a> |
+          <a href="/edit.html?id=${blog._id}">Edit</a> |
+          <button onclick="deleteBlog('${blog._id}')">Delete</button>
+        </td>
+      ;`
+      tbody.appendChild(row);
+    });
+  });
+
+function deleteBlog(id) {
+  if (confirm("Are you sure?")) {
+    fetch(`/blogs/${id}`, { method: 'DELETE' })
+      .then(res => res.json())
+      .then(() => location.reload());
+  }
+}
+
+function goToAddBlog() {
+      window.location.href = "/add.html"; 
+    }
+</script>

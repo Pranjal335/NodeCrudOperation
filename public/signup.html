@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sign Up</title>
+</head>
+<body>
+  <h2>Sign Up</h2>
+  <form action="http://localhost:5000/api/auth/signup" method="POST" enctype="multipart/form-data">
+    <label>Email:</label><br />
+    <input type="email" name="email" required /><br /><br />
+
+    <label>Password:</label><br />
+    <input type="password" name="password" required /><br /><br />
+
+    <label>Profile Image:</label><br />
+    <input type="file" name="profileImage" accept="image/*" required /><br /><br />
+
+    <button type="submit">Sign Up</button>
+  </form>
+  <p>Already have an account? <a href="/login.html">Login here</a></p>
+</body>
+</html>

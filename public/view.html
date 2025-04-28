@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>View Blog</title>
+</head>
+<body>
+  <h2 id="title"></h2>
+  <img id="image" src="" width="300"><br><br>
+  <p id="description"></p>
+
+  <script>
+    const blogId = new URLSearchParams(window.location.search).get('id');
+
+    fetch(`/blogs/${blogId}`)
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById('title').innerText = data.title;
+        document.getElementById('image').src = `/uploads/${data.image}`;
+        document.getElementById('description').innerText = data.description;
+      });
+  </script>
+</body>
+</html>
